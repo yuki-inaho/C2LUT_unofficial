@@ -8,6 +8,34 @@ Color Correction**（arXiv:2607.11681v2）の C²LUT を本文から独立に実
 - [論文本文](https://arxiv.org/html/2607.11681v2)
 - [著者の公開先](https://github.com/claudiom4sir/C2LUT)
 
+## 対応環境と Notebook の実行
+
+サポート対象は **Linux** です。CI では Ubuntu 上の Python 3.11・3.12・3.13 で
+ネイティブ拡張のビルド、数値検証、型検査、配布物の作成を確認します。
+macOS と Windows はサポート対象に含めません。ビルドには C++17 対応の
+コンパイラが必要です。
+
+`notebooks/synthetic_color_correction.ipynb` では、ダミーデータの生成から学習、
+補正前後の色と誤差の可視化までを一通り実行できます。リポジトリのルートで
+次のコマンドを実行してください。
+
+```bash
+uv sync --locked --extra notebook
+uv run --locked --extra notebook jupyter lab notebooks/synthetic_color_correction.ipynb
+```
+
+ブラウザを開かずに Notebook 全体を検証する場合は、次のコマンドを使用します。
+CI でも Python 3.12 上で同じテストを実行し、新しいカーネルで先頭から最後まで
+実行できることを確認します。
+
+```bash
+uv run --locked --extra notebook pytest -q -m notebook
+```
+
+Notebook が使う人工等色関数と参照光は、下記「人工データの確認で分かること」で
+説明する XYZ 相当の合成系です。色見本はこの合成系を画面上で比較するための表示であり、
+実在するカメラの測色精度や論文のベンチマークを再現したものではありません。
+
 ## 数式と処理の対応
 
 | 論文の箇所 | 処理 | 実装で扱う内容 |

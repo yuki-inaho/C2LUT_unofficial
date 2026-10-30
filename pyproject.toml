@@ -9,10 +9,20 @@ description = "Independent illuminant-adaptive Tucker 3D LUT color correction"
 requires-python = ">=3.11,<3.15"
 license = "MIT"
 authors = [{name = "yuki-inaho"}]
+classifiers = ["Operating System :: POSIX :: Linux"]
 dependencies = ["numpy>=1.26,<3"]
 
 [project.optional-dependencies]
 train = ["torch>=2.5,<3"]
+notebook = [
+    "c2lut-unofficial[train]",
+    "matplotlib>=3.9,<4",
+    "jupyterlab>=4.3,<5",
+    "ipykernel>=6.29,<8",
+    "nbclient>=0.10,<1",
+    "nbconvert>=7.16,<8",
+    "nbformat>=5.10,<6",
+]
 
 [project.scripts]
 c2lut = "c2lut.cli:main"
@@ -28,11 +38,14 @@ dev = ["pytest>=8,<10", "mypy>=1.14,<3", "ruff>=0.9,<1"]
 cmake.version = ">=3.18"
 ninja.version = ">=1.11"
 wheel.packages = ["src/c2lut"]
-sdist.include = ["cpp/*.hpp", "cpp/*.cpp", "tests/*.py", "docs/*.md", "examples/*.py", "LICENSE", "uv.lock"]
+sdist.include = ["cpp/*.hpp", "cpp/*.cpp", "tests/*.py", "docs/*.md", "examples/*.py", "notebooks/*.ipynb", "LICENSE", "uv.lock"]
 sdist.exclude = ["**/__pycache__/**", "**/.pytest_cache/**", "**/.mypy_cache/**", "**/.ruff_cache/**"]
 
+[tool.uv]
+environments = ["sys_platform == 'linux'"]
+
 [tool.uv.sources]
-torch = [{index = "pytorch-cpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'"}]
+torch = {index = "pytorch-cpu"}
 
 [[tool.uv.index]]
 name = "pytorch-cpu"
@@ -42,7 +55,10 @@ explicit = true
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra --strict-markers"
-markers = ["e2e: training, serialization and native inference across processes"]
+markers = [
+    "e2e: training, serialization and native inference across processes",
+    "notebook: execute the visualization notebook in a fresh Jupyter kernel",
+]
 
 [tool.mypy]
 python_version = "3.11"

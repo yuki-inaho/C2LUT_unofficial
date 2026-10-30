@@ -1,0 +1,96 @@
+{
+  "artifact_directory": "artifacts/notebook",
+  "basis_weight_spread": 0.35759115828687243,
+  "best_step": 1430,
+  "dataset_kind": "artificial observer and spectra; XYZ-like synthetic coordinates",
+  "display_clipped_component_fractions": {
+    "camera_rgb_wb": 0.0,
+    "fixed_ccm": 0.06388888888888888,
+    "reference": 0.08333333333333333,
+    "trained": 0.06805555555555555
+  },
+  "figure_files": [
+    "figures/01_data_splits.png",
+    "figures/02_learning_curves.png",
+    "figures/03_test_errors.png",
+    "figures/04_channel_parity.png",
+    "figures/05_color_patches.png",
+    "figures/06_basis_weights.png",
+    "figures/07_lut_slices.png"
+  ],
+  "metrics": {
+    "fixed_ccm": {
+      "angular_error_mean_degrees": 0.8586806648666125,
+      "delta_e2000_mean": 1.5516887534854575,
+      "delta_e2000_p95": 3.774730601943349,
+      "delta_e76_mean": 2.7567133937155734,
+      "delta_e76_p95": 6.878652731733547,
+      "xyz_rmse": 0.01815119505217461
+    },
+    "initial": {
+      "angular_error_mean_degrees": 4.106929826335882,
+      "delta_e2000_mean": 9.553801697512272,
+      "delta_e2000_p95": 22.626089527803043,
+      "delta_e76_mean": 18.42531863566763,
+      "delta_e76_p95": 43.63998590473164,
+      "xyz_rmse": 0.050553450134847605
+    },
+    "trained": {
+      "angular_error_mean_degrees": 0.62536672420227,
+      "delta_e2000_mean": 1.2430836611533196,
+      "delta_e2000_p95": 2.8670690967629455,
+      "delta_e76_mean": 2.1548880093179874,
+      "delta_e76_p95": 6.148528186892086,
+      "xyz_rmse": 0.017734044569921337
+    }
+  },
+  "model_config": {
+    "grid_size": 9,
+    "hidden_features": 32,
+    "num_bases": 4,
+    "rank": 4
+  },
+  "native_backend": "c2lut._native",
+  "native_torch_max_abs_error": 3.3306690738754696e-16,
+  "notebook": "notebooks/synthetic_color_correction.ipynb",
+  "reload_max_abs_error": 0.0,
+  "seed": 42,
+  "selection": "minimum validation Delta E76; test data excluded from fitting and selection",
+  "split_shapes": {
+    "test": [
+      10,
+      48,
+      3
+    ],
+    "train": [
+      28,
+      144,
+      3
+    ],
+    "validation": [
+      10,
+      48,
+      3
+    ]
+  },
+  "training_config": {
+    "batch_illuminants": 8,
+    "learning_rate": 0.003,
+    "min_learning_rate": 1e-06,
+    "samples_per_illuminant": 64,
+    "seed": 42,
+    "smoothness_mode": "mean_squared",
+    "smoothness_weight": 0.1,
+    "steps": 1600,
+    "validation_interval": 10
+  },
+  "training_steps": 1600,
+  "verified_date_jst": "2026-10-30",
+  "versions": {
+    "Matplotlib": "3.11.2",
+    "NumPy": "2.5.4",
+    "PyTorch": "2.15.0+cpu",
+    "Python": "3.12.14",
+    "nanobind": "C++ extension loaded"
+  }
+}

@@ -13,13 +13,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest
-            python: "3.11"
-          - os: macos-latest
-            python: "3.12"
-          - os: windows-latest
-            python: "3.13"
-    runs-on: ${{ matrix.os }}
+          - python: "3.11"
+            extra: train
+          - python: "3.12"
+            extra: notebook
+          - python: "3.13"
+            extra: train
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
@@ -27,13 +27,16 @@ jobs:
           python-version: ${{ matrix.python }}
           enable-cache: true
       - name: Build native extension and install training dependencies
-        run: uv sync --locked --extra train
+        run: uv sync --locked --extra ${{ matrix.extra }}
       - name: Verify numerical and end-to-end behavior
-        run: uv run --extra train pytest -q --junitxml=reports/junit.xml
+        run: uv run --locked --extra ${{ matrix.extra }} pytest -q -m "not notebook" --junitxml=reports/junit.xml
+      - name: Execute the visualization notebook from a fresh kernel
+        if: matrix.python == '3.12'
+        run: uv run --locked --extra notebook pytest -q -m notebook
       - name: Check formatting and static types
         run: |
-          uv run --extra train ruff check .
-          uv run --extra train ruff format --check .
-          uv run --extra train mypy
+          uv run --locked --extra ${{ matrix.extra }} ruff check .
+          uv run --locked --extra ${{ matrix.extra }} ruff format --check .
+          uv run --locked --extra ${{ matrix.extra }} mypy
       - name: Build distributable source and wheel
         run: uv build

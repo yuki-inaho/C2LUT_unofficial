@@ -7,33 +7,47 @@
     "python": "3.12.14",
     "torch": "2.15.0+cpu"
   },
+  "notebook": {
+    "code_cells_executed": 10,
+    "command": "uv run --locked --extra notebook pytest -vv -s -m notebook",
+    "executed_from_project_root_and_notebooks_directory": true,
+    "file": "notebooks/synthetic_color_correction.ipynb",
+    "metrics_file": "reports/notebook_validation.json",
+    "passed": 1,
+    "png_figures": 7,
+    "sdist_includes_notebook_with_outputs": true,
+    "seconds": 21.74
+  },
   "notes": [
     "Independent implementation because author code was not available",
     "Synthetic results use an artificial spectral observer and do not establish real-camera CIE accuracy",
     "Model selection uses validation Delta E76; held-out illuminants and reflectances are evaluated",
-    "All checks repeated after runtime recovery; final synthetic metrics reproduced exactly"
+    "All checks repeated after runtime recovery; final synthetic metrics reproduced exactly",
+    "Notebook uses the public model/data/training APIs; all saved test metrics were independently recomputed in the fresh-kernel E2E test"
   ],
   "packaging": {
     "native_identity_max_absolute_error": 6.661338147750939e-16,
-    "source_distribution": "built; wheel compiled from sdist; no README or cache files",
+    "source_distribution": "built; wheel compiled from sdist; executed notebook with 7 PNG outputs included; no README or cache files",
     "torch_installed_in_inference_environment": false,
     "trained_archive_load": "passed",
     "wheel": "built and installed in a separate environment containing only this package and NumPy"
   },
   "paper_benchmark_reproduction": false,
-  "publication_ci": "Linux, macOS and Windows workflow configured; remote outcomes checked separately",
+  "publication_ci": "Linux-only (Ubuntu) on Python 3.11, 3.12 and 3.13; notebook execution on Python 3.12; remote outcomes checked separately",
   "static_checks": {
     "mypy_strict": "passed (13 source files)",
     "ruff_check": "passed",
     "ruff_format_check": "passed"
   },
   "tests": {
-    "command": "uv run --extra train pytest -q --junitxml=reports/junit.xml",
+    "command": "python -m pytest -q -m \"not notebook\" --junitxml=reports/junit.xml (inside the uv notebook environment)",
+    "deselected": 1,
     "errors": 0,
     "failed": 0,
     "passed": 211,
-    "seconds": 11.891,
+    "seconds": 11.701,
     "skipped": 0
   },
+  "total_tests_passed": 212,
   "verified_date_jst": "2026-10-30"
 }
