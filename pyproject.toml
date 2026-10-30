@@ -1,0 +1,57 @@
+[build-system]
+requires = ["scikit-build-core==1.1.1", "nanobind==3.1.0"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "c2lut-unofficial"
+version = "0.1.0"
+description = "Independent illuminant-adaptive Tucker 3D LUT color correction"
+requires-python = ">=3.11,<3.15"
+license = "MIT"
+authors = [{name = "yuki-inaho"}]
+dependencies = ["numpy>=1.26,<3"]
+
+[project.optional-dependencies]
+train = ["torch>=2.5,<3"]
+
+[project.scripts]
+c2lut = "c2lut.cli:main"
+
+[project.urls]
+Repository = "https://github.com/yuki-inaho/C2LUT_unofficial"
+Paper = "https://arxiv.org/abs/2607.11681"
+
+[dependency-groups]
+dev = ["pytest>=8,<10", "mypy>=1.14,<3", "ruff>=0.9,<1"]
+
+[tool.scikit-build]
+cmake.version = ">=3.18"
+ninja.version = ">=1.11"
+wheel.packages = ["src/c2lut"]
+sdist.include = ["cpp/*.hpp", "cpp/*.cpp", "tests/*.py", "docs/*.md", "examples/*.py", "LICENSE", "uv.lock"]
+sdist.exclude = ["**/__pycache__/**", "**/.pytest_cache/**", "**/.mypy_cache/**", "**/.ruff_cache/**"]
+
+[tool.uv.sources]
+torch = [{index = "pytorch-cpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'"}]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers"
+markers = ["e2e: training, serialization and native inference across processes"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["src/c2lut"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
